@@ -2,6 +2,9 @@ import { connectDB } from "@/lib/db/mongodb";
 import { OrderModel, type Order } from "@/models/Order";
 import { UserModel } from "@/models/User";
 
+// Force dynamic rendering - this page requires database connection at runtime
+export const dynamic = "force-dynamic";
+
 const AdminDashboardPage = async () => {
   await connectDB();
 
