@@ -70,19 +70,14 @@ export const Pagination = ({
     return pages;
   };
 
-  const baseButtonClass =
-    "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent";
-  const activeButtonClass =
-    "bg-blue-600 text-white border-blue-600 hover:bg-blue-700";
-
   if (totalPages <= 1) {
     return (
       <div className="flex items-center justify-center gap-3">
-        <label className="text-sm text-gray-700 font-medium">
+        <label className="text-sm font-medium text-[var(--color-primary)]">
           Items per page:
         </label>
         <select
-          className="px-3 py-2 text-sm border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
+          className="select select-bordered select-sm bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-primary)] transition-colors shadow-none"
           value={itemsPerPage}
           onChange={(e) => handleItemsPerPageChange(e.target.value)}
           aria-label="Items per page"
@@ -97,9 +92,9 @@ export const Pagination = ({
 
   return (
     <div className="flex flex-col items-center gap-6 py-4">
-      <div className="flex items-center gap-1">
+      <div className="join">
         <button
-          className={baseButtonClass}
+          className="join-item btn bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-secondary)] transition-colors shadow-none"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           aria-label="Previous page"
@@ -111,13 +106,14 @@ export const Pagination = ({
         {getPageNumbers().map((page, index) => {
           if (page === "...") {
             return (
-              <span
+              <button
                 key={`ellipsis-${index}`}
-                className="px-4 py-2 text-sm text-gray-500"
+                className="join-item btn btn-disabled bg-[var(--color-accent)] text-white border-white opacity-50 shadow-none"
+                disabled
                 aria-label="More pages"
               >
                 ...
-              </span>
+              </button>
             );
           }
 
@@ -126,8 +122,10 @@ export const Pagination = ({
           return (
             <button
               key={pageNumber}
-              className={`${baseButtonClass} ${
-                isActive ? activeButtonClass : "text-gray-700 bg-white"
+              className={`join-item btn border-white transition-colors shadow-none ${
+                isActive
+                  ? "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary)]"
+                  : "bg-[var(--color-accent)] text-white hover:bg-[var(--color-secondary)]"
               }`}
               onClick={() => handlePageChange(pageNumber)}
               aria-label={`Go to page ${pageNumber}`}
@@ -140,7 +138,7 @@ export const Pagination = ({
         })}
 
         <button
-          className={baseButtonClass}
+          className="join-item btn bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-secondary)] transition-colors shadow-none"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           aria-label="Next page"
@@ -150,11 +148,11 @@ export const Pagination = ({
         </button>
       </div>
       <div className="flex items-center justify-center gap-3">
-        <label className="text-sm text-gray-700 font-medium">
+        <label className="text-sm font-medium text-[var(--color-primary)]">
           Items per page:
         </label>
         <select
-          className="px-3 py-2 text-sm border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
+          className="select select-bordered select-sm bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-primary)] transition-colors shadow-none"
           value={itemsPerPage}
           onChange={(e) => handleItemsPerPageChange(e.target.value)}
           aria-label="Items per page"

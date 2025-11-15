@@ -60,12 +60,9 @@ export const Breadcrumbs = () => {
         <ul className="flex items-center gap-2 text-gray-500">
           {breadcrumbs.map((item, index) => (
             <li key={item.href}>
-              <Link href={item.href} className="text-sm">
+              <Link href={item.href} className="text-sm cursor-pointer">
                 {item.label}
               </Link>
-              {index < breadcrumbs.length - 1 && (
-                <span className="text-gray-500"> / </span>
-              )}
             </li>
           ))}
         </ul>

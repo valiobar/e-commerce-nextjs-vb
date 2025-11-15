@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useLayoutEffect,
-  useEffect,
-  useRef,
-  KeyboardEvent,
-  startTransition,
-} from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { useCartStore } from "@/store/cartStore";
 import "./CartIcon.css";
 
@@ -16,14 +9,14 @@ export const CartIcon = () => {
   const toggleCart = useCartStore((state) => state.toggleCart);
   const [mounted, setMounted] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isAdding, setIsAdding] = useState(true);
   const prevTotalItemsRef = useRef(0);
 
-  useLayoutEffect(() => {
-    startTransition(() => {
+  useEffect(() => {
+    requestAnimationFrame(() => {
       setMounted(true);
-      prevTotalItemsRef.current = totalItems;
     });
-  }, [totalItems]);
+  }, []);
 
   useEffect(() => {
     if (!mounted) {
@@ -31,25 +24,36 @@ export const CartIcon = () => {
       return;
     }
 
-    if (totalItems > prevTotalItemsRef.current) {
-      setIsAnimating(false);
+    // Trigger animation when count changes (increase or decrease)
+    if (totalItems !== prevTotalItemsRef.current) {
+      // Determine if we're adding or removing items
+      const adding = totalItems > prevTotalItemsRef.current;
+      setIsAdding(adding);
+
+      // Force reflow to restart animation
+      let rafId2: number;
       let timeoutId: NodeJS.Timeout;
-      const rafId = requestAnimationFrame(() => {
-        setIsAnimating(true);
-        timeoutId = setTimeout(() => {
+
+      const rafId1 = requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
           setIsAnimating(false);
-        }, 500);
+          rafId2 = requestAnimationFrame(() => {
+            setIsAnimating(true);
+            // Reset animation state after animation completes
+            timeoutId = setTimeout(() => {
+              setIsAnimating(false);
+            }, 800);
+          });
+        });
       });
       prevTotalItemsRef.current = totalItems;
+
       return () => {
-        cancelAnimationFrame(rafId);
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
+        cancelAnimationFrame(rafId1);
+        if (rafId2) cancelAnimationFrame(rafId2);
+        if (timeoutId) clearTimeout(timeoutId);
       };
     }
-    
-    prevTotalItemsRef.current = totalItems;
   }, [totalItems, mounted]);
 
   const handleCartClick = () => {
@@ -69,16 +73,18 @@ export const CartIcon = () => {
     <button
       onClick={handleCartClick}
       onKeyDown={handleKeyDown}
-      className="btn btn-ghost btn-circle text-white hover:bg-white/20"
+      className="btn btn-ghost btn-circle text-white hover:bg-white/20 cursor-pointer border-none hover:border-none"
       aria-label={`Shopping cart with ${displayItems} items`}
       tabIndex={0}
     >
-      <div className={`indicator ${isAnimating ? "animate-pop" : ""}`}>
+      <div className="indicator">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          className="inline-block h-5 w-5 stroke-white"
+          className={`inline-block h-5 w-5 stroke-white ${
+            isAnimating ? "animate-pop" : ""
+          }`}
         >
           <path
             strokeLinecap="round"
@@ -89,8 +95,12 @@ export const CartIcon = () => {
         </svg>
         {mounted && totalItems > 0 && (
           <span
-            className={`badge badge-sm badge-primary indicator-item ${
-              isAnimating ? "animate-bounce-in" : ""
+            className={`badge badge-sm indicator-item text-white border-none ${
+              isAnimating
+                ? `animate-bounce-pop ${
+                    isAdding ? "bg-green-500/60" : "bg-red-500/60"
+                  }`
+                : "bg-[var(--color-primary)]/60"
             }`}
           >
             {totalItems}
@@ -100,4 +110,3 @@ export const CartIcon = () => {
     </button>
   );
 };
-

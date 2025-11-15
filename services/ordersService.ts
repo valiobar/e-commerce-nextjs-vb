@@ -1,18 +1,9 @@
 import type { Order } from "@/models/Order";
-import type { CartItem } from "@/types/product";
 
-interface CreateOrderParams {
-  userId?: string;
-  items: CartItem[];
-  total: number;
-  shippingAddress: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-}
+type CreateOrderParams = Omit<
+  Order,
+  "_id" | "status" | "createdAt" | "updatedAt"
+>;
 
 export const ordersService = {
   /**

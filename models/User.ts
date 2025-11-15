@@ -3,7 +3,7 @@ import { Schema, model, models } from "mongoose";
 export interface User {
   _id?: string;
   email: string;
-  name: string;
+  username: string;
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -18,9 +18,11 @@ const UserSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    name: {
+    username: {
       type: String,
       required: true,
+      unique: true,
+      trim: true,
     },
     password: {
       type: String,

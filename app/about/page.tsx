@@ -15,7 +15,7 @@ const About = () => {
 
         <div className="space-y-8">
           <section className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-semibold mb-4 text-indigo-600">
+            <h2 className="text-3xl font-semibold mb-4 text-[var(--color-primary)]">
               Our Story
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
@@ -33,7 +33,7 @@ const About = () => {
           </section>
 
           <section className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-semibold mb-4 text-purple-600">
+            <h2 className="text-3xl font-semibold mb-4 text-[var(--color-primary)]">
               Our Mission
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
@@ -53,12 +53,12 @@ const About = () => {
           </section>
 
           <section className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-semibold mb-4 text-pink-600">
+            <h2 className="text-3xl font-semibold mb-4 text-[var(--color-primary)]">
               Our Values
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="border-l-4 border-indigo-500 pl-4">
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                <h3 className="text-xl font-semibold mb-2 text-[var(--color-primary)]">
                   Quality First
                 </h3>
                 <p className="text-gray-600">
@@ -67,7 +67,7 @@ const About = () => {
                 </p>
               </div>
               <div className="border-l-4 border-purple-500 pl-4">
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                <h3 className="text-xl font-semibold mb-2 text-[var(--color-primary)]">
                   Customer Focus
                 </h3>
                 <p className="text-gray-600">
@@ -76,7 +76,7 @@ const About = () => {
                 </p>
               </div>
               <div className="border-l-4 border-pink-500 pl-4">
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                <h3 className="text-xl font-semibold mb-2 text-[var(--color-primary)]">
                   Innovation
                 </h3>
                 <p className="text-gray-600">
@@ -85,7 +85,7 @@ const About = () => {
                 </p>
               </div>
               <div className="border-l-4 border-indigo-500 pl-4">
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                <h3 className="text-xl font-semibold mb-2 text-[var(--color-primary)]">
                   Integrity
                 </h3>
                 <p className="text-gray-600">
@@ -97,7 +97,7 @@ const About = () => {
           </section>
 
           <section className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-semibold mb-4 text-indigo-600">
+            <h2 className="text-3xl font-semibold mb-4 text-[var(--color-primary)]">
               Why Choose Us?
             </h2>
             <div className="space-y-4">
@@ -106,7 +106,7 @@ const About = () => {
                   <span className="text-indigo-600 font-bold text-xl">✓</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1 text-gray-800">
+                  <h3 className="text-xl font-semibold mb-1 text-[var(--color-primary)]">
                     Wide Selection
                   </h3>
                   <p className="text-gray-600">
@@ -120,7 +120,7 @@ const About = () => {
                   <span className="text-purple-600 font-bold text-xl">✓</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1 text-gray-800">
+                  <h3 className="text-xl font-semibold mb-1 text-[var(--color-primary)]">
                     Secure Shopping
                   </h3>
                   <p className="text-gray-600">
@@ -134,7 +134,7 @@ const About = () => {
                   <span className="text-pink-600 font-bold text-xl">✓</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1 text-gray-800">
+                  <h3 className="text-xl font-semibold mb-1 text-[var(--color-primary)]">
                     24/7 Support
                   </h3>
                   <p className="text-gray-600">
@@ -148,7 +148,7 @@ const About = () => {
                   <span className="text-indigo-600 font-bold text-xl">✓</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1 text-gray-800">
+                  <h3 className="text-xl font-semibold mb-1 text-[var(--color-primary)]">
                     Easy Returns
                   </h3>
                   <p className="text-gray-600">
@@ -161,7 +161,9 @@ const About = () => {
           </section>
 
           <section className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-lg shadow-lg p-8 text-white">
-            <h2 className="text-3xl font-semibold mb-4">Get in Touch</h2>
+            <h2 className="text-3xl font-semibold mb-4 text-white">
+              Get in Touch
+            </h2>
             <p className="mb-4 text-lg">
               Have questions or feedback? We&apos;d love to hear from you!
             </p>

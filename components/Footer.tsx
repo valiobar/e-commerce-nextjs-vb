@@ -21,7 +21,7 @@ export const Footer = () => {
               <p className="pt-2">
                 <a
                   href="mailto:info@ecommercestore.com"
-                  className="hover:text-white underline"
+                  className="hover:text-white underline cursor-pointer"
                   aria-label="Email us at info@ecommercestore.com"
                 >
                   info@ecommercestore.com
@@ -30,7 +30,7 @@ export const Footer = () => {
               <p>
                 <a
                   href="tel:+1234567890"
-                  className="hover:text-white underline"
+                  className="hover:text-white underline cursor-pointer"
                   aria-label="Call us at +1 (234) 567-890"
                 >
                   +1 (234) 567-890

@@ -50,7 +50,7 @@ const RootLayout = ({
   children: ReactNode;
 }>) => {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >

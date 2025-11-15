@@ -14,9 +14,11 @@ const CartPage = () => {
   if (items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="mb-4 text-4xl font-bold">Your Cart</h1>
+        <h1 className="mb-4 text-4xl font-bold text-[var(--color-primary)]">
+          Your Cart
+        </h1>
         <p className="mb-8 text-gray-600">Your cart is empty</p>
-        <Link href="/" className="btn btn-primary">
+        <Link href="/" className="btn btn-primary cursor-pointer">
           Continue Shopping
         </Link>
       </div>
@@ -26,10 +28,12 @@ const CartPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-4xl font-bold">Your Cart</h1>
+        <h1 className="text-4xl font-bold text-[var(--color-primary)]">
+          Your Cart
+        </h1>
         <button
           onClick={clearCart}
-          className="btn btn-ghost btn-sm"
+          className="btn btn-ghost btn-sm cursor-pointer"
           aria-label="Clear all items from cart"
           tabIndex={0}
         >
@@ -47,7 +51,10 @@ const CartPage = () => {
               <div key={item.id} className="card bg-base-100 shadow-xl">
                 <div className="card-body">
                   <div className="flex flex-col gap-4 sm:flex-row">
-                    <Link href={`/products/${item.id}`}>
+                    <Link
+                      href={`/products/${item.id}`}
+                      className="cursor-pointer"
+                    >
                       <div className="h-32 w-32 shrink-0 overflow-hidden rounded-lg">
                         <img
                           src={item.thumbnail}
@@ -58,11 +65,16 @@ const CartPage = () => {
                     </Link>
 
                     <div className="flex-1">
-                      <Link href={`/products/${item.id}`}>
-                        <h2 className="card-title hover:link">{item.title}</h2>
+                      <Link
+                        href={`/products/${item.id}`}
+                        className="cursor-pointer"
+                      >
+                        <h2 className="card-title hover:link text-[var(--color-primary)]">
+                          {item.title}
+                        </h2>
                       </Link>
                       <div className="mt-2 flex items-center gap-2">
-                        <span className="text-xl font-bold">
+                        <span className="text-xl font-bold text-[var(--color-accent)]">
                           ${discountedPrice.toFixed(2)}
                         </span>
                         {item.discountPercentage > 0 && (
@@ -76,7 +88,7 @@ const CartPage = () => {
                     <div className="flex flex-col items-end justify-between gap-4">
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="btn btn-ghost btn-sm btn-circle"
+                        className="btn btn-ghost btn-sm btn-circle cursor-pointer"
                         aria-label="Remove item"
                       >
                         <svg
@@ -100,7 +112,7 @@ const CartPage = () => {
                           onClick={() =>
                             updateQuantity(item.id, item.quantity - 1)
                           }
-                          className="btn btn-sm btn-circle"
+                          className="btn btn-sm btn-circle cursor-pointer"
                           aria-label="Decrease quantity"
                           tabIndex={0}
                         >
@@ -113,7 +125,7 @@ const CartPage = () => {
                           onClick={() =>
                             updateQuantity(item.id, item.quantity + 1)
                           }
-                          className="btn btn-sm btn-circle"
+                          className="btn btn-sm btn-circle cursor-pointer"
                           aria-label="Increase quantity"
                           tabIndex={0}
                         >
@@ -122,7 +134,7 @@ const CartPage = () => {
                       </div>
 
                       <div className="text-right">
-                        <p className="text-lg font-bold">
+                        <p className="text-lg font-bold text-[var(--color-accent)]">
                           ${(discountedPrice * item.quantity).toFixed(2)}
                         </p>
                       </div>
@@ -137,7 +149,9 @@ const CartPage = () => {
         <div className="lg:col-span-1">
           <div className="card bg-base-100 sticky top-4 shadow-xl">
             <div className="card-body">
-              <h2 className="card-title">Order Summary</h2>
+              <h2 className="card-title text-[var(--color-primary)]">
+                Order Summary
+              </h2>
               <div className="divider"></div>
               <div className="space-y-2">
                 <div className="flex justify-between">
@@ -151,16 +165,17 @@ const CartPage = () => {
                 </div>
               </div>
               <div className="card-actions mt-4">
-                <button
-                  className="btn btn-primary btn-block"
+                <Link
+                  href="/checkout"
+                  className="btn btn-primary btn-block cursor-pointer"
                   aria-label="Proceed to checkout"
                   tabIndex={0}
                 >
                   Checkout
-                </button>
+                </Link>
                 <Link
                   href="/"
-                  className="btn btn-outline btn-block"
+                  className="btn btn-outline btn-block cursor-pointer"
                   aria-label="Continue shopping"
                   tabIndex={0}
                 >

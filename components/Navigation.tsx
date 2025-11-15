@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { CartIcon } from "@/components/icons/CartIcon";
+import { CartIcon } from "@/components/icons/cart-icon/CartIcon";
 
 export const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +29,7 @@ export const Navigation = () => {
         <div className="flex-1 flex-direction-row">
           <Link
             href="/"
-            className="btn btn-ghost text-xl font-bold text-white hover:text-white/90"
+            className="btn btn-ghost text-xl font-bold text-white hover:text-white/90 cursor-pointer"
             aria-label="E-Commerce Store Home"
           >
             E-Commerce Store
@@ -38,7 +38,7 @@ export const Navigation = () => {
         <div className="flex-none flex items-center gap-4">
           <Link
             href="/about"
-            className="btn btn-ghost text-white hover:text-white/90 hover:bg-white/10"
+            className="btn btn-ghost text-white hover:text-white/90 hover:bg-white/10 cursor-pointer"
             aria-label="About Us"
           >
             About
