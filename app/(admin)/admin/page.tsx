@@ -1,20 +1,18 @@
 import { connectDB } from "@/lib/db/mongodb";
-import { OrderModel } from "@/models/Order";
+import { OrderModel, type Order } from "@/models/Order";
 import { UserModel } from "@/models/User";
 
 const AdminDashboardPage = async () => {
   await connectDB();
 
   // Get statistics
-  const [totalOrders, totalUsers, recentOrders] = await Promise.all([
-    OrderModel.countDocuments(),
-    UserModel.countDocuments(),
-    OrderModel.find().sort({ createdAt: -1 }).limit(5).lean(),
-  ]);
-
-  // Calculate total revenue
-  const orders = await OrderModel.find().lean();
-  const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+  const [totalOrders, totalUsers, recentOrders, totalRevenue] =
+    await Promise.all([
+      OrderModel.countDocuments(),
+      UserModel.countDocuments(),
+      OrderModel.find().sort({ createdAt: -1 }).limit(5).lean(),
+      OrderModel.getTotalRevenue(),
+    ]);
 
   return (
     <div className="space-y-6">
@@ -116,7 +114,7 @@ const AdminDashboardPage = async () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentOrders.map((order) => (
+                  {recentOrders.map((order: Order) => (
                     <tr key={order._id?.toString()}>
                       <td className="font-mono text-sm">
                         {order._id?.toString().slice(-8)}
@@ -131,8 +129,21 @@ const AdminDashboardPage = async () => {
                           : "-"}
                       </td>
                       <td>
-                        <span className="badge badge-success badge-sm">
-                          Completed
+                        <span
+                          className={`badge badge-sm ${
+                            order.status === "delivered"
+                              ? "badge-success"
+                              : order.status === "shipped"
+                              ? "badge-primary"
+                              : order.status === "processing"
+                              ? "badge-info"
+                              : order.status === "cancelled"
+                              ? "badge-error"
+                              : "badge-warning"
+                          }`}
+                        >
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
                         </span>
                       </td>
                     </tr>

@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, type Model } from "mongoose";
 import type { CartItem } from "@/types/product";
 
 export interface ShippingAddress {
@@ -84,5 +84,34 @@ const OrderSchema = new Schema(
     timestamps: true,
   }
 );
+OrderSchema.statics.getTotalRevenue = async function (): Promise<number> {
+  const result = await this.aggregate([
+    {
+      $group: {
+        _id: null,
+        total: { $sum: "$total" },
+      },
+    },
+  ]);
 
-export const OrderModel = models.Order || model<Order>("Order", OrderSchema);
+  return result.length > 0 ? result[0].total : 0;
+};
+
+interface OrderModelStatics extends Model<Order> {
+  getTotalRevenue(): Promise<number>;
+}
+
+// Ensure the static method is available on cached models
+if (
+  models.Order &&
+  !(models.Order as unknown as OrderModelStatics).getTotalRevenue
+) {
+  (models.Order as unknown as OrderModelStatics).getTotalRevenue = OrderSchema
+    .statics.getTotalRevenue as () => Promise<number>;
+}
+
+export const OrderModel = (models.Order ||
+  model<Order, OrderModelStatics>(
+    "Order",
+    OrderSchema
+  )) as unknown as OrderModelStatics;

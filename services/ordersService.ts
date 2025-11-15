@@ -72,4 +72,18 @@ export const ordersService = {
 
     return res.json();
   },
+
+  /**
+   * Get total revenue from all orders
+   */
+  async getTotalRevenue(): Promise<number> {
+    const res = await fetch("/api/orders?totalRevenue=true");
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch total revenue");
+    }
+
+    const data = await res.json();
+    return data.totalRevenue;
+  },
 };

@@ -10,6 +10,22 @@ export const GET = async (request: Request) => {
 
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
+    const totalRevenue = searchParams.get("totalRevenue");
+
+    // If totalRevenue is requested, return only the total revenue
+    if (totalRevenue === "true") {
+      const result = await OrderModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+
+      const revenue = result.length > 0 ? result[0].total : 0;
+      return NextResponse.json({ totalRevenue: revenue });
+    }
 
     const query = userId ? { userId } : {};
 
