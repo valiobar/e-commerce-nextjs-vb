@@ -1,53 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useCartStore } from "@/store/cartStore";
+import { CartIcon } from "@/components/icons/CartIcon";
 
 export const Navigation = () => {
-  const totalItems = useCartStore((state) => state.getTotalItems());
-  const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const handleRef = (node: HTMLDivElement | null) => {
-    if (node && !mounted) {
-      setMounted(true);
-    }
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="navbar bg-base-100 shadow-lg" ref={handleRef}>
-      <div className="container mx-auto px-4">
-        <div className="flex-1">
-          <Link href="/" className="btn btn-ghost text-xl">
+    <>
+      <div
+        className={`navbar bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg px-3 flex flex-row justify-between sticky z-50 backdrop-blur-md transition-all duration-300 ease-in-out ${
+          isScrolled
+            ? "py-2 scale-[0.85] opacity-80 origin-top mt-3 top-5 rounded-3xl"
+            : "py-5 scale-100 top-0 rounded-none"
+        }`}
+      >
+        <div className="flex-1 flex-direction-row">
+          <Link
+            href="/"
+            className="btn btn-ghost text-xl font-bold text-white hover:text-white/90"
+            aria-label="E-Commerce Store Home"
+          >
             E-Commerce Store
           </Link>
         </div>
-        <div className="flex-none">
-          <Link href="/cart" className="btn btn-ghost btn-circle">
-            <div className="indicator">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              {mounted && totalItems > 0 && (
-                <span className="badge badge-sm indicator-item badge-primary">
-                  {totalItems}
-                </span>
-              )}
-            </div>
+        <div className="flex-none flex items-center gap-4">
+          <Link
+            href="/about"
+            className="btn btn-ghost text-white hover:text-white/90 hover:bg-white/10"
+            aria-label="About Us"
+          >
+            About
           </Link>
+          <CartIcon />
         </div>
       </div>
-    </nav>
+    </>
   );
 };

@@ -1,7 +1,11 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Navigation } from "@/components/Navigation";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { Footer } from "@/components/Footer";
+import { CartSidebar } from "@/components/CartSidebar";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,23 +18,52 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "E-Commerce Store",
+  title: {
+    default: "E-Commerce Store",
+    template: "%s | E-Commerce Store",
+  },
   description: "Shop the latest products at great prices",
+  keywords: ["e-commerce", "shopping", "products", "online store"],
+  authors: [{ name: "E-Commerce Store" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://your-store.com",
+    title: "E-Commerce Store",
+    description: "Shop the latest products at great prices",
+    siteName: "E-Commerce Store",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "E-Commerce Store",
+    description: "Shop the latest products at great prices",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
-  children: React.ReactNode;
-}>) {
+  children: ReactNode;
+}>) => {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        <Navigation />
-        <main>{children}</main>
+        <div className="flex-1 flex flex-col">
+          <Navigation />
+          <Breadcrumbs />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+        <CartSidebar />
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

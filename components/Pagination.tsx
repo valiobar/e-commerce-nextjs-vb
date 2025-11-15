@@ -70,14 +70,19 @@ export const Pagination = ({
     return pages;
   };
 
+  const baseButtonClass =
+    "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent";
+  const activeButtonClass =
+    "bg-blue-600 text-white border-blue-600 hover:bg-blue-700";
+
   if (totalPages <= 1) {
     return (
-      <div className="flex items-center justify-center gap-4">
-        <label className="label">
-          <span className="label-text">Items per page:</span>
+      <div className="flex items-center justify-center gap-3">
+        <label className="text-sm text-gray-700 font-medium">
+          Items per page:
         </label>
         <select
-          className="select select-bordered w-24"
+          className="px-3 py-2 text-sm border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
           value={itemsPerPage}
           onChange={(e) => handleItemsPerPageChange(e.target.value)}
           aria-label="Items per page"
@@ -91,13 +96,14 @@ export const Pagination = ({
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="join flex justify-center">
+    <div className="flex flex-col items-center gap-6 py-4">
+      <div className="flex items-center gap-1">
         <button
-          className={`join-item btn ${currentPage === 1 ? "btn-disabled" : ""}`}
+          className={baseButtonClass}
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           aria-label="Previous page"
+          tabIndex={0}
         >
           «
         </button>
@@ -105,14 +111,13 @@ export const Pagination = ({
         {getPageNumbers().map((page, index) => {
           if (page === "...") {
             return (
-              <button
+              <span
                 key={`ellipsis-${index}`}
-                className="join-item btn btn-disabled"
-                disabled
+                className="px-4 py-2 text-sm text-gray-500"
                 aria-label="More pages"
               >
                 ...
-              </button>
+              </span>
             );
           }
 
@@ -121,10 +126,13 @@ export const Pagination = ({
           return (
             <button
               key={pageNumber}
-              className={`join-item btn ${isActive ? "btn-active" : ""}`}
+              className={`${baseButtonClass} ${
+                isActive ? activeButtonClass : "text-gray-700 bg-white"
+              }`}
               onClick={() => handlePageChange(pageNumber)}
               aria-label={`Go to page ${pageNumber}`}
               aria-current={isActive ? "page" : undefined}
+              tabIndex={0}
             >
               {pageNumber}
             </button>
@@ -132,29 +140,29 @@ export const Pagination = ({
         })}
 
         <button
-          className={`join-item btn ${
-            currentPage === totalPages ? "btn-disabled" : ""
-          }`}
+          className={baseButtonClass}
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           aria-label="Next page"
+          tabIndex={0}
         >
           »
         </button>
       </div>
-      <div className="flex items-center justify-center gap-4">
-        <label className="label">
-          <span className="label-text">Items per page:</span>
+      <div className="flex items-center justify-center gap-3">
+        <label className="text-sm text-gray-700 font-medium">
+          Items per page:
         </label>
         <select
-          className="select select-bordered w-24"
+          className="px-3 py-2 text-sm border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
           value={itemsPerPage}
           onChange={(e) => handleItemsPerPageChange(e.target.value)}
           aria-label="Items per page"
         >
           <option value="12">12</option>
-          <option value="18">18</option>
-          <option value="24">24</option>
+          <option value="24">18</option>
+          <option value="36">36</option>
+          <option value="48">48</option>
         </select>
       </div>
     </div>

@@ -4,18 +4,23 @@ import type { CartItem, Product } from "@/types/product";
 
 interface CartStore {
   items: CartItem[];
+  isOpen: boolean;
   addItem: (product: Product) => void;
   removeItem: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  toggleCart: () => void;
+  openCart: () => void;
+  closeCart: () => void;
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      isOpen: false,
       addItem: (product: Product) => {
         const items = get().items;
         const existingItem = items.find((item) => item.id === product.id);
@@ -30,7 +35,13 @@ export const useCartStore = create<CartStore>()(
           });
         } else {
           set({
-            items: [...items, { ...product, quantity: 1 }],
+            items: [
+              ...items,
+              {
+                ...product,
+                quantity: 1,
+              } as CartItem,
+            ],
           });
         }
       },
@@ -62,10 +73,19 @@ export const useCartStore = create<CartStore>()(
           0
         );
       },
+      toggleCart: () => {
+        set({ isOpen: !get().isOpen });
+      },
+      openCart: () => {
+        set({ isOpen: true });
+      },
+      closeCart: () => {
+        set({ isOpen: false });
+      },
     }),
     {
       name: "cart-storage",
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );
-

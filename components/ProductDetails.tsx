@@ -1,8 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useCartStore } from "@/store/cartStore";
 import type { Product } from "@/types/product";
-import { useState } from "react";
 
 interface ProductDetailsProps {
   product: Product;
@@ -36,11 +36,13 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                 <button
                   key={index}
                   onClick={() => setSelectedImageIndex(index)}
-                  className={`h-20 w-20 flex-shrink-0 overflow-hidden rounded border-2 ${
+                  className={`h-20 w-20 shrink-0 overflow-hidden rounded border-2 ${
                     selectedImageIndex === index
                       ? "border-primary"
                       : "border-gray-200"
                   }`}
+                  aria-label={`View ${product.title} image ${index + 1}`}
+                  tabIndex={0}
                 >
                   <img
                     src={image}
@@ -103,7 +105,8 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
 
           <div className="space-y-2">
             <p>
-              <span className="font-semibold">Category:</span> {product.category}
+              <span className="font-semibold">Category:</span>{" "}
+              {product.category}
             </p>
             <p>
               <span className="font-semibold">Brand:</span> {product.brand}
@@ -113,6 +116,8 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
           <button
             onClick={handleAddToCart}
             className="btn btn-primary btn-lg w-full"
+            aria-label="Add product to cart"
+            tabIndex={0}
           >
             Add to Cart
           </button>
@@ -121,4 +126,3 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
     </div>
   );
 };
-

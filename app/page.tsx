@@ -1,38 +1,22 @@
 import { ProductCard } from "@/components/ProductCard";
 import { Pagination } from "@/components/Pagination";
-import type { ProductsResponse } from "@/types/product";
 import { ITEMS_PER_PAGE } from "@/constants/pagination";
-
-const fetchProducts = async (
-  page: number = 1,
-  limit: number = ITEMS_PER_PAGE
-): Promise<ProductsResponse> => {
-  const skip = (page - 1) * limit;
-  const res = await fetch(
-    `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
-  }
-
-  return res.json();
-};
+import { productsService } from "@/services/productsService";
 
 interface HomeProps {
   searchParams: Promise<{ page?: string; limit?: string }>;
 }
 
-export default async function Home({ searchParams }: HomeProps) {
+const Home = async ({ searchParams }: HomeProps) => {
   const params = await searchParams;
   const currentPage = params.page ? parseInt(params.page, 10) : 1;
   const itemsPerPage = params.limit
     ? parseInt(params.limit, 10)
     : ITEMS_PER_PAGE;
-  const data = await fetchProducts(currentPage, itemsPerPage);
+  const data = await productsService.fetchProducts({
+    page: currentPage,
+    limit: itemsPerPage,
+  });
   const totalPages = Math.ceil(data.total / itemsPerPage);
 
   return (
@@ -53,4 +37,6 @@ export default async function Home({ searchParams }: HomeProps) {
       </div>
     </div>
   );
-}
+};
+
+export default Home;

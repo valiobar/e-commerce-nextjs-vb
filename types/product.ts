@@ -1,3 +1,11 @@
+export interface Review {
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+  reviewerEmail: string;
+}
+
 export interface Product {
   id: number;
   title: string;
@@ -10,6 +18,7 @@ export interface Product {
   category: string;
   thumbnail: string;
   images: string[];
+  reviews: Review[];
 }
 
 export interface ProductsResponse {
@@ -19,6 +28,10 @@ export interface ProductsResponse {
   limit: number;
 }
 
-export interface CartItem extends Product {
+export interface CartItem
+  extends Omit<
+    Product,
+    "images" | "stock" | "rating" | "brand" | "category" | "reviews"
+  > {
   quantity: number;
 }

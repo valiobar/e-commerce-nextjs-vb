@@ -1,9 +1,9 @@
 "use client";
 
-import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
+import { useCartStore } from "@/store/cartStore";
 
-export default function CartPage() {
+const CartPage = () => {
   const items = useCartStore((state) => state.items);
   const removeItem = useCartStore((state) => state.removeItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -27,7 +27,12 @@ export default function CartPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-4xl font-bold">Your Cart</h1>
-        <button onClick={clearCart} className="btn btn-ghost btn-sm">
+        <button
+          onClick={clearCart}
+          className="btn btn-ghost btn-sm"
+          aria-label="Clear all items from cart"
+          tabIndex={0}
+        >
           Clear Cart
         </button>
       </div>
@@ -39,14 +44,11 @@ export default function CartPage() {
               item.price - (item.price * item.discountPercentage) / 100;
 
             return (
-              <div
-                key={item.id}
-                className="card bg-base-100 shadow-xl"
-              >
+              <div key={item.id} className="card bg-base-100 shadow-xl">
                 <div className="card-body">
                   <div className="flex flex-col gap-4 sm:flex-row">
                     <Link href={`/products/${item.id}`}>
-                      <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-lg">
+                      <div className="h-32 w-32 shrink-0 overflow-hidden rounded-lg">
                         <img
                           src={item.thumbnail}
                           alt={item.title}
@@ -59,7 +61,6 @@ export default function CartPage() {
                       <Link href={`/products/${item.id}`}>
                         <h2 className="card-title hover:link">{item.title}</h2>
                       </Link>
-                      <p className="text-gray-600">{item.brand}</p>
                       <div className="mt-2 flex items-center gap-2">
                         <span className="text-xl font-bold">
                           ${discountedPrice.toFixed(2)}
@@ -101,6 +102,7 @@ export default function CartPage() {
                           }
                           className="btn btn-sm btn-circle"
                           aria-label="Decrease quantity"
+                          tabIndex={0}
                         >
                           -
                         </button>
@@ -113,6 +115,7 @@ export default function CartPage() {
                           }
                           className="btn btn-sm btn-circle"
                           aria-label="Increase quantity"
+                          tabIndex={0}
                         >
                           +
                         </button>
@@ -148,10 +151,19 @@ export default function CartPage() {
                 </div>
               </div>
               <div className="card-actions mt-4">
-                <button className="btn btn-primary btn-block">
+                <button
+                  className="btn btn-primary btn-block"
+                  aria-label="Proceed to checkout"
+                  tabIndex={0}
+                >
                   Checkout
                 </button>
-                <Link href="/" className="btn btn-outline btn-block">
+                <Link
+                  href="/"
+                  className="btn btn-outline btn-block"
+                  aria-label="Continue shopping"
+                  tabIndex={0}
+                >
                   Continue Shopping
                 </Link>
               </div>
@@ -161,5 +173,6 @@ export default function CartPage() {
       </div>
     </div>
   );
-}
+};
 
+export default CartPage;
