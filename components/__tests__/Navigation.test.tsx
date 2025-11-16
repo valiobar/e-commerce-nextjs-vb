@@ -19,7 +19,7 @@ describe("Navigation", () => {
     const { container } = render(<Navigation />);
 
     // Test navigation links
-    const homeLink = screen.getByLabelText("E-Commerce Store Home");
+    const homeLink = screen.getByLabelText("Memu Home");
     const aboutLink = screen.getByLabelText("About Us");
 
     expect(homeLink).toHaveAttribute("href", "/");

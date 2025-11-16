@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { CartIcon } from "@/components/icons/cart-icon/CartIcon";
+import { CategoriesButton } from "@/components/buttons/CategoriesButton";
 
 export const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,12 +31,13 @@ export const Navigation = () => {
           <Link
             href="/"
             className="btn btn-ghost text-xl font-bold text-white hover:text-white/90 cursor-pointer"
-            aria-label="E-Commerce Store Home"
+            aria-label="Memu Home"
           >
-            E-Commerce Store
+            Memu
           </Link>
         </div>
         <div className="flex-none flex items-center gap-4">
+          <CategoriesButton />
           <Link
             href="/about"
             className="btn btn-ghost text-white hover:text-white/90 hover:bg-white/10 cursor-pointer"

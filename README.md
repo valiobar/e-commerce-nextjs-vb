@@ -8,6 +8,8 @@ A modern e-commerce web application built with Next.js, TypeScript, Tailwind CSS
 
 - 🏠 **Home Page**: Browse a grid of products with images, titles, prices, and ratings
 - 📦 **Product Details**: View detailed information about each product including images, description, and specifications
+- 🗂️ **Product Categories**: Browse products by category with a slide-in categories drawer
+- 📂 **Category Pages**: Dedicated pages for each category with filtering and sorting
 - 🔍 **Product Sorting**: Sort products by title, price, discount, or rating in ascending/descending order
 - 🛒 **Shopping Cart**: Add/remove products, update quantities, and view totals
 - 📱 **Mobile Cart Sidebar**: Responsive cart sidebar that's fully visible on mobile devices
@@ -97,6 +99,8 @@ e-commerce-nextjs/
 │   ├── (store)/           # Store route group
 │   │   ├── about/         # About page
 │   │   ├── cart/          # Cart page
+│   │   ├── category/      # Category pages
+│   │   │   └── [slug]/    # Dynamic category route
 │   │   ├── checkout/      # Checkout pages
 │   │   ├── products/      # Product pages
 │   │   ├── layout.tsx     # Store layout
@@ -112,9 +116,11 @@ e-commerce-nextjs/
 ├── components/
 │   ├── __tests__/         # Component tests
 │   ├── buttons/           # Button components
+│   │   └── CategoriesButton.tsx # Categories button
 │   ├── icons/             # Icon components
 │   ├── forms/             # Form components
 │   ├── Navigation.tsx     # Header navigation
+│   ├── CategoriesDrawer.tsx # Categories drawer component
 │   ├── ProductCard.tsx    # Product card component
 │   ├── ProductDetails.tsx # Product details component
 │   ├── ProductFilters.tsx # Product sorting/filtering
@@ -127,10 +133,12 @@ e-commerce-nextjs/
 │   ├── authService.ts     # Authentication service
 │   ├── adminService.ts    # Admin service
 │   ├── productsService.ts # Products API service
+│   ├── categoryService.ts # Categories API service
 │   ├── ordersService.ts   # Orders API service
 │   └── ...                # Other services
 ├── store/
 │   ├── cartStore.ts       # Cart state management
+│   ├── categoriesStore.ts # Categories drawer state
 │   └── adminAuthStore.ts  # Admin auth state
 ├── models/                # Database models
 │   ├── User.ts            # User model
@@ -143,6 +151,7 @@ e-commerce-nextjs/
 │   ├── product.ts         # Product types
 │   └── sorting.ts         # Sorting types
 ├── constants/             # Application constants
+│   └── api.ts            # API configuration
 └── middleware.ts          # Next.js middleware
 ```
 
@@ -174,6 +183,8 @@ e-commerce-nextjs/
 - **Image Gallery**: Implemented image carousel on product details page
 - **Cart Badge**: Real-time cart item count in navigation for better UX
 - **Cart Sidebar**: Slide-in cart sidebar with full mobile responsiveness
+- **Categories Drawer**: Slide-in categories drawer accessible from navigation with keyboard support (Escape to close)
+- **Category Navigation**: Browse products by category with dedicated category pages
 - **Dark Theme**: Admin panel supports dark/light theme toggle with persistent preference
 - **Pagination**: Customizable items per page with intuitive navigation controls
 - **Error Boundaries**: React error boundaries at app, store, and admin levels for graceful error handling
@@ -184,13 +195,13 @@ e-commerce-nextjs/
 2. **No Payment Processing**: Checkout button is present but doesn't process payments
 3. **No Search Functionality**: Product list shows all products without search capability (sorting is available)
 4. **Client-Side Cart**: Store cart persistence is client-side only (localStorage)
-5. **No Product Filtering**: Products can be sorted but not filtered by category or other attributes
+5. **Category Filtering Only**: Products can be filtered by category, but not by other attributes (e.g., price range, brand)
 
 ## Known Limitations
 
 - Store cart data is stored only in browser localStorage (clears if user clears browser data)
 - No product search functionality (sorting by title, price, discount, and rating is available)
-- No product filtering by category or other attributes
+- Limited product filtering (only by category, not by price range, brand, or other attributes)
 - Checkout functionality is not implemented (UI only, orders are saved to database)
 - Images are loaded from external URLs (DummyJSON CDN)
 - Admin authentication is separate from customer accounts
@@ -249,11 +260,10 @@ pnpm test:coverage
 ## Future Enhancements
 
 - [ ] Add product search functionality
-- [ ] Add product filtering by category and other attributes
+- [ ] Add advanced product filtering (price range, brand, rating, etc.)
 - [ ] Integrate payment processing (Stripe, PayPal, etc.)
 - [ ] Add product reviews and ratings
 - [ ] Implement wishlist functionality
-- [ ] Add product categories navigation
 - [ ] Customer account system with order history
 - [ ] Email notifications for orders
 - [ ] Product inventory management
@@ -261,6 +271,7 @@ pnpm test:coverage
 - [ ] Multi-language support
 - [ ] Error tracking service integration (Sentry, LogRocket, etc.)
 - [ ] Server-side cart persistence for logged-in users
+- [ ] Category breadcrumbs and navigation improvements
 
 ## License
 

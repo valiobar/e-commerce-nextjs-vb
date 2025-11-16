@@ -4,7 +4,7 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold">E-Commerce Store</h3>
+            <h3 className="text-2xl font-bold">Memu</h3>
             <p className="text-white/90 text-sm">
               Your one-stop destination for quality products at unbeatable
               prices. We bring you the best shopping experience with a wide
@@ -45,7 +45,7 @@ export const Footer = () => {
               &quot;Quality Products, Exceptional Service, Unmatched Value&quot;
             </p>
             <p className="text-white/80 text-xs pt-4">
-              © 2025 E-Commerce Store. All rights reserved.
+              © 2025 Memu. All rights reserved.
             </p>
           </div>
         </div>

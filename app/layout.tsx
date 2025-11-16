@@ -15,23 +15,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "E-Commerce Store",
-    template: "%s | E-Commerce Store",
+    default: "Memu",
+    template: "%s | Memu",
   },
   description: "Shop the latest products at great prices",
   keywords: ["e-commerce", "shopping", "products", "online store"],
-  authors: [{ name: "E-Commerce Store" }],
+  authors: [{ name: "Memu" }],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://your-store.com",
-    title: "E-Commerce Store",
+    title: "Memu",
     description: "Shop the latest products at great prices",
-    siteName: "E-Commerce Store",
+    siteName: "Memu",
   },
   twitter: {
     card: "summary_large_image",
-    title: "E-Commerce Store",
+    title: "Memu",
     description: "Shop the latest products at great prices",
   },
   robots: {

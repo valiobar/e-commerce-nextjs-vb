@@ -80,6 +80,7 @@ describe("ordersService", () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 400,
+        json: async () => ({ error: "Failed to create order" }),
       });
 
       await expect(ordersService.createOrder(orderData)).rejects.toThrow(
@@ -108,9 +109,7 @@ describe("ordersService", () => {
       });
 
       const result = await ordersService.getOrdersByUserId("user123");
-      expect(global.fetch).toHaveBeenCalledWith(
-        "/api/orders?userId=user123"
-      );
+      expect(global.fetch).toHaveBeenCalledWith("/api/orders?userId=user123");
       expect(result).toEqual(mockOrders);
 
       // Test empty array when no orders found
@@ -126,11 +125,12 @@ describe("ordersService", () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 500,
+        json: async () => ({ error: "Failed to fetch orders" }),
       });
 
-      await expect(
-        ordersService.getOrdersByUserId("user123")
-      ).rejects.toThrow("Failed to fetch orders");
+      await expect(ordersService.getOrdersByUserId("user123")).rejects.toThrow(
+        "Failed to fetch orders"
+      );
     });
   });
 
@@ -150,6 +150,7 @@ describe("ordersService", () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 404,
+        json: async () => ({ error: "Failed to fetch order" }),
       });
 
       await expect(ordersService.getOrderById("nonexistent")).rejects.toThrow(
@@ -208,6 +209,7 @@ describe("ordersService", () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 400,
+        json: async () => ({ error: "Failed to update order" }),
       });
 
       await expect(
@@ -251,6 +253,7 @@ describe("ordersService", () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 500,
+        json: async () => ({ error: "Failed to fetch total revenue" }),
       });
 
       await expect(ordersService.getTotalRevenue()).rejects.toThrow(
@@ -259,4 +262,3 @@ describe("ordersService", () => {
     });
   });
 });
-

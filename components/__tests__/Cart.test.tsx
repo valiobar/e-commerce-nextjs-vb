@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { usePathname } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
 import { Cart } from "../Cart";
@@ -64,9 +65,7 @@ describe("Cart and CartSidebar", () => {
 
       // Test empty state
       expect(screen.getByText("Your cart is empty")).toBeInTheDocument();
-      expect(
-        screen.getByLabelText("Continue shopping")
-      ).toBeInTheDocument();
+      expect(screen.getByLabelText("Continue shopping")).toBeInTheDocument();
 
       // Test cart with items
       (useCartStore as unknown as jest.Mock).mockImplementation((selector) => {
@@ -157,7 +156,8 @@ describe("Cart and CartSidebar", () => {
 
       rerender(<CartSidebar />);
 
-      expect(sidebar).toHaveClass("w-96", "opacity-100");
+      expect(sidebar).toHaveClass("opacity-100");
+      expect(sidebar).toHaveClass("sm:w-96");
       expect(sidebar).not.toHaveClass("pointer-events-none");
 
       // Test Escape key closes cart
@@ -178,4 +178,3 @@ describe("Cart and CartSidebar", () => {
     });
   });
 });
-

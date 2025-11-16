@@ -175,7 +175,7 @@ describe("adminService", () => {
       );
 
       await expect(getDashboardStats()).rejects.toThrow(
-        "Database connection failed"
+        "Failed to load dashboard statistics"
       );
     });
   });

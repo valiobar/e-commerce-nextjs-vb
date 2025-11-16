@@ -38,7 +38,7 @@ export const Breadcrumbs = () => {
       } else {
         label = path.charAt(0).toUpperCase() + path.slice(1);
       }
-      if (path !== "products") {
+      if (path !== "products" && path !== "category") {
         items.push({
           label,
           href: currentPath,

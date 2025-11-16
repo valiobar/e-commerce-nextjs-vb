@@ -49,9 +49,9 @@ describe("authService", () => {
         json: async () => mockErrorResponse,
       });
 
-      await expect(
-        authService.login("admin", "wrongpassword")
-      ).rejects.toThrow("Invalid credentials");
+      await expect(authService.login("admin", "wrongpassword")).rejects.toThrow(
+        "Invalid credentials"
+      );
 
       // Test error without message
       (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -91,6 +91,7 @@ describe("authService", () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 500,
+        json: async () => ({ error: "Logout failed" }),
       });
 
       await expect(authService.logout()).rejects.toThrow("Logout failed");
@@ -174,4 +175,3 @@ describe("authService", () => {
     });
   });
 });
-

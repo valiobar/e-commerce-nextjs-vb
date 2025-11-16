@@ -89,7 +89,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 btn btn-square btn-ghost bg-base-100 shadow-lg"
+        className="lg:hidden fixed top-4 left-4 z-50 btn btn-square bg-base-100 border border-base-300 shadow-lg text-base-content hover:bg-base-200"
         aria-label="Toggle sidebar"
         aria-expanded={isSidebarOpen}
       >
