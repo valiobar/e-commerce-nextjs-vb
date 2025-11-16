@@ -78,6 +78,13 @@ pnpm dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### Admin Panel Access
+
+To access the admin panel, navigate to `/admin/login` and use the following credentials:
+
+- **Username**: `admin`
+- **Password**: `admin`
+
 ### Build for Production
 
 ```bash
