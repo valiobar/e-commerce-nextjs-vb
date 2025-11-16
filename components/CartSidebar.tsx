@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
 import { Cart } from "@/components/Cart";
-import type { KeyboardEvent } from "react";
+import type { KeyboardEvent, MouseEvent } from "react";
 
 export const CartSidebar = () => {
   const pathname = usePathname();
   const isOpen = useCartStore((state) => state.isOpen);
   const closeCart = useCartStore((state) => state.closeCart);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -18,16 +19,52 @@ export const CartSidebar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        isOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        closeCart();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, closeCart]);
+
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       closeCart();
     }
   };
 
+  const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeCart();
+    }
+  };
+
   return (
     <>
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-[49] transition-opacity duration-300"
+          onClick={handleBackdropClick}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar */}
       <div
+        ref={sidebarRef}
         className={`fixed right-0 top-0 h-screen bg-white shadow-2xl flex flex-col transition-all duration-300 ease-in-out overflow-hidden border-l border-gray-200 z-50 ${
           isOpen
             ? "w-full sm:w-96 opacity-100 translate-x-0"

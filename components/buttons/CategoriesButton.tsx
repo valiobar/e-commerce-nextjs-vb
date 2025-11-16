@@ -9,7 +9,7 @@ export const CategoriesButton = () => {
   return (
     <button
       onClick={openCategories}
-      className="btn btn-ghost text-white hover:text-white/90 hover:bg-white/10 cursor-pointer"
+      className="btn btn-ghost p-0 text-white hover:text-white/90 hover:bg-white/10 cursor-pointer"
       aria-label="Categories"
       aria-expanded={isOpen}
     >

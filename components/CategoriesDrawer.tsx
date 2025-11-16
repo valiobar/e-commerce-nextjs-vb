@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useCategoriesStore } from "@/store/categoriesStore";
-import type { KeyboardEvent } from "react";
+import type { KeyboardEvent, MouseEvent } from "react";
 
 interface CategoriesDrawerProps {
   categories: string[];
@@ -19,6 +19,7 @@ const formatCategoryName = (slug: string): string => {
 export const CategoriesDrawer = ({ categories }: CategoriesDrawerProps) => {
   const isOpen = useCategoriesStore((state) => state.isOpen);
   const closeCategories = useCategoriesStore((state) => state.closeCategories);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +31,26 @@ export const CategoriesDrawer = ({ categories }: CategoriesDrawerProps) => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, [isOpen, closeCategories]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        isOpen &&
+        drawerRef.current &&
+        !drawerRef.current.contains(event.target as Node)
+      ) {
+        closeCategories();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [isOpen, closeCategories]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -46,10 +67,26 @@ export const CategoriesDrawer = ({ categories }: CategoriesDrawerProps) => {
     return null;
   }
 
+  const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeCategories();
+    }
+  };
+
   return (
     <>
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-[59] transition-opacity duration-300"
+          onClick={handleBackdropClick}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Categories Drawer */}
       <div
+        ref={drawerRef}
         className={`fixed left-0 top-0 h-screen bg-white shadow-2xl flex flex-col transition-all duration-300 ease-in-out overflow-hidden border-r border-gray-200 z-[60] ${
           isOpen
             ? "w-full sm:w-80 opacity-100 translate-x-0"

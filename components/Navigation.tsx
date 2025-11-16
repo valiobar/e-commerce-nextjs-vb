@@ -21,7 +21,7 @@ export const Navigation = () => {
   return (
     <>
       <div
-        className={`navbar bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg px-3 flex flex-row justify-between sticky z-50 backdrop-blur-md transition-all duration-300 ease-in-out ${
+        className={`navbar bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg px-3 flex flex-row justify-between items-center sticky z-50 backdrop-blur-md transition-all duration-300 ease-in-out overflow-visible ${
           isScrolled
             ? "py-2 scale-[0.85] opacity-80 origin-top mt-3 top-5 rounded-3xl"
             : "py-5 scale-100 top-0 rounded-none"
@@ -36,16 +36,18 @@ export const Navigation = () => {
             Memu
           </Link>
         </div>
-        <div className="flex-none flex items-center gap-4">
+        <div className="flex-none flex items-center gap-4 relative">
           <CategoriesButton />
           <Link
             href="/about"
-            className="btn btn-ghost text-white hover:text-white/90 hover:bg-white/10 cursor-pointer"
+            className="btn btn-ghost p-0 text-white hover:text-white/90 hover:bg-white/10 cursor-pointer text-sm sm:text-base"
             aria-label="About Us"
           >
             About
           </Link>
-          <CartIcon />
+          <div className="relative">
+            <CartIcon />
+          </div>
         </div>
       </div>
     </>

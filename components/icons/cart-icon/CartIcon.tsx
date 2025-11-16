@@ -74,7 +74,7 @@ export const CartIcon = () => {
     <button
       onClick={handleCartClick}
       onKeyDown={handleKeyDown}
-      className="btn btn-ghost btn-circle text-white hover:bg-white/20 cursor-pointer border-none hover:border-none"
+      className="btn btn-ghost btn-circle text-white hover:bg-white/20 cursor-pointer border-none hover:border-none relative"
       aria-label={`Shopping cart with ${displayItems} items`}
       tabIndex={0}
     >
