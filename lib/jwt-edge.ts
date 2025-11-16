@@ -54,7 +54,7 @@ export const verifyTokenEdge = (token: string): TokenPayload | null => {
     }
 
     return decoded;
-  } catch (error) {
+  } catch {
     // Token is invalid or malformed
     return null;
   }

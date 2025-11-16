@@ -48,7 +48,7 @@ export const verifyToken = (token: string): TokenPayload | null => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as TokenPayload;
     return decoded;
-  } catch (error) {
+  } catch {
     // Token is invalid, expired, or malformed
     return null;
   }
@@ -63,7 +63,7 @@ export const decodeToken = (token: string): TokenPayload | null => {
   try {
     const decoded = jwt.decode(token) as TokenPayload;
     return decoded;
-  } catch (error) {
+  } catch {
     return null;
   }
 };

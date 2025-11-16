@@ -58,7 +58,7 @@ export const Breadcrumbs = () => {
     <div className="container mx-auto px-4 py-4">
       <div className="breadcrumbs text-sm">
         <ul className="flex items-center gap-2 text-gray-500">
-          {breadcrumbs.map((item, index) => (
+          {breadcrumbs.map((item) => (
             <li key={item.href}>
               <Link href={item.href} className="text-sm cursor-pointer">
                 {item.label}

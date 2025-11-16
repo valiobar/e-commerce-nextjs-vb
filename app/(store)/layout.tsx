@@ -6,10 +6,12 @@ import { CartSidebar } from "@/components/CartSidebar";
 
 const StoreLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col w-full">
       <Navigation />
       <Breadcrumbs />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 w-full min-w-0 overflow-x-hidden">
+        {children}
+      </main>
       <Footer />
       <CartSidebar />
     </div>
@@ -17,4 +19,3 @@ const StoreLayout = ({ children }: { children: ReactNode }) => {
 };
 
 export default StoreLayout;
-

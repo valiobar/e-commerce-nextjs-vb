@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/types/product";
 import { AddToCart } from "./buttons/AddToCart";
 
@@ -13,11 +14,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Link href={`/products/${product.id}`} className="cursor-pointer">
       <div className="card bg-base-200 hover:bg-base-300 h-full w-full shadow-xl transition-transform hover:scale-105 p-5 cursor-pointer flex flex-col">
-        <figure className="h-64 w-full overflow-hidden flex-shrink-0">
-          <img
+        <figure className="h-64 w-full overflow-hidden shrink-0">
+          <Image
             src={product.thumbnail}
             alt={product.title}
+            width={400}
+            height={400}
             className="h-full w-full object-cover"
+            priority={false}
           />
         </figure>
         <div className="card-body flex flex-col flex-1 p-0 pt-4">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface PaginationProps {
@@ -18,24 +19,13 @@ export const Pagination = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > totalPages || page === currentPage) {
-      return;
-    }
+  // Memoize search params string to prevent unnecessary re-renders
+  const searchParamsString = useMemo(
+    () => searchParams.toString(),
+    [searchParams]
+  );
 
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", page.toString());
-    router.push(`${basePath}?${params.toString()}`);
-  };
-
-  const handleItemsPerPageChange = (limit: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("limit", limit);
-    params.set("page", "1");
-    router.push(`${basePath}?${params.toString()}`);
-  };
-
-  const getPageNumbers = () => {
+  const getPageNumbers = useCallback(() => {
     const pages: (number | string)[] = [];
     const maxVisible = 7;
 
@@ -68,16 +58,49 @@ export const Pagination = ({
     }
 
     return pages;
+  }, [currentPage, totalPages]);
+
+  // Prefetch next and previous pages for faster navigation
+  useEffect(() => {
+    const buildPageUrl = (page: number) => {
+      const params = new URLSearchParams(searchParamsString);
+      params.set("page", page.toString());
+      return `${basePath}?${params.toString()}`;
+    };
+
+    // Prefetch next page
+    if (currentPage < totalPages) {
+      router.prefetch(buildPageUrl(currentPage + 1));
+    }
+
+    // Prefetch previous page
+    if (currentPage > 1) {
+      router.prefetch(buildPageUrl(currentPage - 1));
+    }
+  }, [currentPage, totalPages, basePath, searchParamsString, router]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParamsString);
+    params.set("page", page.toString());
+    router.push(`${basePath}?${params.toString()}`, { scroll: false });
+  };
+
+  const handleItemsPerPageChange = (limit: string) => {
+    const params = new URLSearchParams(searchParamsString);
+    params.set("limit", limit);
+    params.set("page", "1");
+    router.push(`${basePath}?${params.toString()}`, { scroll: false });
   };
 
   if (totalPages <= 1) {
     return (
-      <div className="flex items-center justify-center gap-3">
-        <label className="text-sm font-medium text-[var(--color-primary)]">
-          Items per page:
-        </label>
+      <div className="flex items-center justify-center gap-3 py-4">
         <select
-          className="select select-bordered select-sm bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-primary)] transition-colors shadow-none"
+          className="select select-bordered w-20 h-12"
           value={itemsPerPage}
           onChange={(e) => handleItemsPerPageChange(e.target.value)}
           aria-label="Items per page"
@@ -91,10 +114,12 @@ export const Pagination = ({
   }
 
   return (
-    <div className="flex flex-col items-center gap-6 py-4">
+    <div className="flex items-center justify-center gap-3 py-4">
       <div className="join">
         <button
-          className="join-item btn bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-secondary)] transition-colors shadow-none"
+          className={`join-item btn ${
+            currentPage === 1 ? "bg-secondary text-white" : ""
+          }`}
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           aria-label="Previous page"
@@ -108,7 +133,7 @@ export const Pagination = ({
             return (
               <button
                 key={`ellipsis-${index}`}
-                className="join-item btn btn-disabled bg-[var(--color-accent)] text-white border-white opacity-50 shadow-none"
+                className="join-item btn btn-disabled bg-secondary text-white"
                 disabled
                 aria-label="More pages"
               >
@@ -122,10 +147,8 @@ export const Pagination = ({
           return (
             <button
               key={pageNumber}
-              className={`join-item btn border-white transition-colors shadow-none ${
-                isActive
-                  ? "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary)]"
-                  : "bg-[var(--color-accent)] text-white hover:bg-[var(--color-secondary)]"
+              className={`join-item btn ${
+                isActive ? "bg-secondary text-white" : ""
               }`}
               onClick={() => handlePageChange(pageNumber)}
               aria-label={`Go to page ${pageNumber}`}
@@ -138,7 +161,9 @@ export const Pagination = ({
         })}
 
         <button
-          className="join-item btn bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-secondary)] transition-colors shadow-none"
+          className={`join-item btn ${
+            currentPage === totalPages ? "bg-secondary text-white" : ""
+          }`}
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           aria-label="Next page"
@@ -147,22 +172,17 @@ export const Pagination = ({
           »
         </button>
       </div>
-      <div className="flex items-center justify-center gap-3">
-        <label className="text-sm font-medium text-[var(--color-primary)]">
-          Items per page:
-        </label>
-        <select
-          className="select select-bordered select-sm bg-[var(--color-accent)] text-white border-white hover:bg-[var(--color-primary)] transition-colors shadow-none"
-          value={itemsPerPage}
-          onChange={(e) => handleItemsPerPageChange(e.target.value)}
-          aria-label="Items per page"
-        >
-          <option value="12">12</option>
-          <option value="24">18</option>
-          <option value="36">36</option>
-          <option value="48">48</option>
-        </select>
-      </div>
+      <select
+        className="select select-bordered w-20 h-10"
+        value={itemsPerPage}
+        onChange={(e) => handleItemsPerPageChange(e.target.value)}
+        aria-label="Items per page"
+      >
+        <option value="12">12</option>
+        <option value="24">18</option>
+        <option value="36">36</option>
+        <option value="48">48</option>
+      </select>
     </div>
   );
 };

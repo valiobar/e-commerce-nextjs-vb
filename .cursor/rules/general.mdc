@@ -196,3 +196,67 @@ import "./CartIcon.css";
 - **Constants**: Place in `constants/` folder with camelCase naming
 - **Utilities**: Place in `utils/` folder with camelCase naming
 - **Styles**: Co-locate CSS files with components when component-specific, or use `app/globals.css` for global styles
+
+##Testing Approaches
+
+### Unit Testing
+
+- **Test individual components:** Write unit tests for individual components to ensure they are working correctly.
+- **Use a testing framework:** Use a testing framework like Jest or Mocha.
+- **Mock dependencies:** Mock external dependencies to isolate components during testing.
+- **Test edge cases:** Test edge cases and error conditions to ensure the component is robust.
+- **Use React Testing Library:** Prefer React Testing Library for component testing as it encourages testing from a user perspective, promoting better accessibility and more robust tests.
+- **Combine tests with similar inputs:** When multiple tests use similar inputs or test similar behaviors, combine them into a single test with all assertions. Use `rerender` from the first `render` call to update component state between assertions. This reduces redundancy, improves maintainability, and keeps test files concise while maintaining full coverage.
+
+### Integration Testing
+
+- **Test interactions between components:** Write integration tests to ensure that components are working together correctly.
+- **Test API calls:** Test API calls to ensure that data is being fetched and saved correctly.
+- **Use a testing framework:** Use a testing framework like Jest or Mocha with libraries like `msw` (Mock Service Worker) to intercept and mock API calls.
+
+### Test Organization
+
+- **Co-locate tests with components:** Keep tests in the same directory as the components they are testing.
+- **Use a consistent naming convention:** Use a consistent naming convention for test files (e.g., `ComponentName.test.ts`).
+- **Organize tests by feature:** Organize tests by feature to improve maintainability.
+
+### Mocking and Stubbing
+
+- **Mock external dependencies:** Mock external dependencies to isolate components during testing.
+- **Stub API calls:** Stub API calls to prevent network requests during testing.
+- **Use a mocking library:** Use a mocking library like Jest's built-in mocking capabilities or `msw`.
+
+### Optimization Techniques
+
+- **Image optimization:** Use `next/image` component for automatic image optimization, including lazy loading and responsive images.
+- **Font optimization:** Use `next/font` to optimize font loading and prevent layout shift.
+- **Code splitting:** Use dynamic imports and route-level code splitting to reduce initial load time.
+- **Caching:** Use caching strategies (e.g., `Cache-Control` headers, `SWR`, `React Query`) to reduce data fetching overhead.
+- **Memoization:** Use `React.memo` to prevent unnecessary re-renders of components.
+- **Prefetching:** Use the `<Link prefetch>` tag to prefetch pages that are likely to be visited.
+- **SSR/SSG:** Use Static Site Generation (SSG) for content that doesn't change often and Server-Side Rendering (SSR) for dynamic content.
+- **Incremental Static Regeneration (ISR):** Use ISR to update statically generated pages on a regular interval.
+
+### Memory Management
+
+- **Avoid memory leaks:** Clean up event listeners and timers in `useEffect` hooks.
+- **Minimize re-renders:** Only update state when necessary to reduce the number of re-renders.
+- **Use immutable data structures:** Avoid mutating data directly to prevent unexpected side effects.
+
+### Rendering Optimization
+
+- **Server Components (app directory):** Render as much as possible on the server to reduce client-side JavaScript.
+- **Client Components (app directory):** Only use client components when interactivity is required. Defer rendering of non-critical client components using `React.lazy`.
+
+### Bundle Size Optimization
+
+- **Analyze bundle size:** Use tools like `webpack-bundle-analyzer` to identify large dependencies.
+- **Remove unused code:** Use tree shaking to remove unused code from your bundles.
+- **Use smaller dependencies:** Replace large dependencies with smaller, more lightweight alternatives.
+- **Compression:** Enable Gzip or Brotli compression on your server to reduce the size of the transferred files.
+
+### Lazy Loading
+
+- **Images:** Use `next/image` for automatic lazy loading of images.
+- **Components:** Use `next/dynamic` for lazy loading of components.
+- **Intersection Observer:** Use the Intersection Observer API for manual lazy loading of content.

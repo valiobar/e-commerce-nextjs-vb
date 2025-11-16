@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCartStore } from "@/store/cartStore";
 
 export const Cart = () => {
@@ -11,6 +12,18 @@ export const Cart = () => {
   const closeCart = useCartStore((state) => state.closeCart);
   const totalItems = useCartStore((state) => state.getTotalItems());
   const totalPrice = useCartStore((state) => state.getTotalPrice());
+
+  const handleDecreaseQuantity = (itemId: number, currentQuantity: number) => {
+    updateQuantity(itemId, currentQuantity - 1);
+  };
+
+  const handleIncreaseQuantity = (itemId: number, currentQuantity: number) => {
+    updateQuantity(itemId, currentQuantity + 1);
+  };
+
+  const handleRemoveItem = (itemId: number) => {
+    removeItem(itemId);
+  };
 
   return (
     <>
@@ -59,9 +72,11 @@ export const Cart = () => {
                         className="shrink-0 cursor-pointer"
                       >
                         <div className="h-20 w-20 overflow-hidden rounded-lg">
-                          <img
+                          <Image
                             src={item.thumbnail}
                             alt={item.title}
+                            width={80}
+                            height={80}
                             className="h-full w-full object-cover"
                           />
                         </div>
@@ -73,12 +88,12 @@ export const Cart = () => {
                           onClick={closeCart}
                           className="block cursor-pointer"
                         >
-                          <h3 className="font-semibold text-sm hover:link truncate text-[var(--color-primary)]">
+                          <h3 className="font-semibold text-sm hover:link truncate text-primary">
                             {item.title}
                           </h3>
                         </Link>
                         <div className="mt-1 flex items-center gap-2">
-                          <span className="text-sm font-bold text-[var(--color-accent)]">
+                          <span className="text-sm font-bold text-accent">
                             ${discountedPrice.toFixed(2)}
                           </span>
                           {item.discountPercentage > 0 && (
@@ -92,7 +107,7 @@ export const Cart = () => {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() =>
-                                updateQuantity(item.id, item.quantity - 1)
+                                handleDecreaseQuantity(item.id, item.quantity)
                               }
                               className="btn btn-xs btn-circle cursor-pointer"
                               aria-label="Decrease quantity"
@@ -105,7 +120,7 @@ export const Cart = () => {
                             </span>
                             <button
                               onClick={() =>
-                                updateQuantity(item.id, item.quantity + 1)
+                                handleIncreaseQuantity(item.id, item.quantity)
                               }
                               className="btn btn-xs btn-circle cursor-pointer"
                               aria-label="Increase quantity"
@@ -116,11 +131,11 @@ export const Cart = () => {
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-[var(--color-accent)]">
+                            <span className="text-sm font-bold text-accent">
                               ${(discountedPrice * item.quantity).toFixed(2)}
                             </span>
                             <button
-                              onClick={() => removeItem(item.id)}
+                              onClick={() => handleRemoveItem(item.id)}
                               className="btn btn-ghost btn-xs btn-circle cursor-pointer"
                               aria-label="Remove item"
                               tabIndex={0}

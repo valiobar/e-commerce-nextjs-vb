@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef, KeyboardEvent } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCartStore } from "@/store/cartStore";
+import type { KeyboardEvent } from "react";
 import "./CartIcon.css";
 
 export const CartIcon = () => {

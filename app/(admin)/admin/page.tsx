@@ -1,26 +1,17 @@
-import { connectDB } from "@/lib/db/mongodb";
-import { OrderModel, type Order } from "@/models/Order";
-import { UserModel } from "@/models/User";
+import { getDashboardStats } from "@/services/adminService";
+import type { Order } from "@/models/Order";
 
 // Force dynamic rendering - this page requires database connection at runtime
 export const dynamic = "force-dynamic";
 
 const AdminDashboardPage = async () => {
-  await connectDB();
-
-  // Get statistics
-  const [totalOrders, totalUsers, recentOrders, totalRevenue] =
-    await Promise.all([
-      OrderModel.countDocuments(),
-      UserModel.countDocuments(),
-      OrderModel.find().sort({ createdAt: -1 }).limit(5).lean(),
-      OrderModel.getTotalRevenue(),
-    ]);
+  const { totalOrders, totalUsers, recentOrders, totalRevenue } =
+    await getDashboardStats();
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-base-content">Dashboard</h1>
         <p className="text-base-content/70 mt-1">
           Welcome to the admin dashboard
         </p>

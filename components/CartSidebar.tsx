@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
-import type { KeyboardEvent } from "react";
 import { Cart } from "@/components/Cart";
+import type { KeyboardEvent } from "react";
 
 export const CartSidebar = () => {
   const pathname = usePathname();
@@ -15,6 +15,7 @@ export const CartSidebar = () => {
     if (isOpen) {
       closeCart();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

@@ -1,50 +1,77 @@
 # E-Commerce Store
 
-A modern e-commerce web application built with Next.js, TypeScript, Tailwind CSS, and DaisyUI. This application fetches product data from the DummyJSON API and provides a complete shopping experience with cart functionality.
+A modern e-commerce web application built with Next.js, TypeScript, Tailwind CSS, and DaisyUI. This application fetches product data from the DummyJSON API and provides a complete shopping experience with cart functionality, order management, and a comprehensive admin panel.
 
 ## Features
+
+### Store Features
 
 - 🏠 **Home Page**: Browse a grid of products with images, titles, prices, and ratings
 - 📦 **Product Details**: View detailed information about each product including images, description, and specifications
 - 🛒 **Shopping Cart**: Add/remove products, update quantities, and view totals
 - 💾 **Persistent Cart**: Cart state persists across page refreshes using localStorage
+- 📄 **Pagination**: Navigate through products with customizable items per page
 - 🎨 **Modern UI**: Beautiful, responsive design using Tailwind CSS and DaisyUI
 - ⚡ **Fast Performance**: Built with Next.js 16 for optimal performance
 
+### Admin Panel Features
+
+- 🔐 **Admin Authentication**: Secure login system for admin users
+- 📊 **Dashboard**: Overview of orders, revenue, users, and recent activity
+- 📦 **Order Management**: View and manage customer orders
+- 👥 **User Management**: Manage user accounts
+- 🎨 **Dark Theme Toggle**: Switch between light and dark themes with persistent preference
+- 🔒 **Protected Routes**: Admin routes are protected with authentication middleware
+
 ## Tech Stack
 
-- **Framework**: Next.js 16
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4 + DaisyUI
 - **State Management**: Zustand with persistence
-- **API**: DummyJSON API
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT (JSON Web Tokens)
+- **API**: DummyJSON API (for products)
+- **Testing**: Jest + React Testing Library
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - pnpm (or npm/yarn)
+- MongoDB database (local or cloud instance like MongoDB Atlas)
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <your-repo-url>
 cd e-commerce-nextjs
 ```
 
 2. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
+
+4. Run the development server:
+
 ```bash
 pnpm dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Build for Production
 
@@ -58,62 +85,95 @@ pnpm start
 ```
 e-commerce-nextjs/
 ├── app/
-│   ├── cart/              # Cart page
-│   ├── products/[id]/     # Product details page (dynamic route)
-│   ├── layout.tsx         # Root layout with navigation
-│   ├── page.tsx           # Home page with product list
+│   ├── (admin)/           # Admin route group
+│   │   └── admin/         # Admin panel pages
+│   │       ├── login/     # Admin login page
+│   │       ├── layout.tsx # Admin layout with sidebar
+│   │       └── page.tsx   # Admin dashboard
+│   ├── (store)/           # Store route group
+│   │   ├── cart/          # Cart page
+│   │   ├── checkout/      # Checkout pages
+│   │   ├── products/      # Product pages
+│   │   ├── layout.tsx     # Store layout
+│   │   └── page.tsx       # Home page
+│   ├── api/               # API routes
+│   │   ├── auth/          # Authentication endpoints
+│   │   └── orders/        # Order endpoints
+│   ├── layout.tsx         # Root layout
 │   └── globals.css        # Global styles
 ├── components/
-│   ├── Navigation.tsx     # Header navigation with cart icon
+│   ├── __tests__/         # Component tests
+│   ├── buttons/           # Button components
+│   ├── icons/             # Icon components
+│   ├── Navigation.tsx     # Header navigation
 │   ├── ProductCard.tsx    # Product card component
-│   └── ProductDetails.tsx # Product details component
+│   ├── ProductDetails.tsx # Product details component
+│   ├── Pagination.tsx     # Pagination component
+│   └── ...                # Other components
+├── services/              # Business logic services
+│   ├── __tests__/         # Service tests
+│   ├── authService.ts     # Authentication service
+│   ├── adminService.ts    # Admin service
+│   └── ...                # Other services
 ├── store/
-│   └── cartStore.ts       # Zustand store for cart state
-├── types/
-│   └── product.ts         # TypeScript types for products
-└── tailwind.config.ts     # Tailwind CSS configuration
+│   ├── cartStore.ts       # Cart state management
+│   └── adminAuthStore.ts  # Admin auth state
+├── models/                # Database models
+│   ├── User.ts            # User model
+│   └── Order.ts           # Order model
+├── lib/                   # Utility libraries
+│   ├── db/                # Database connection
+│   ├── jwt.ts             # JWT utilities
+│   └── password.ts        # Password hashing
+├── types/                 # TypeScript types
+│   └── product.ts         # Product types
+├── constants/             # Application constants
+└── middleware.ts          # Next.js middleware
 ```
 
 ## Thought Process & Design Decisions
 
 ### State Management with Zustand
+
 - **Why Zustand?**: Lightweight, simple API, and excellent TypeScript support
 - **Persistence**: Used Zustand's `persist` middleware to save cart state to localStorage
 - **Benefits**: Minimal boilerplate, easy to use, and performant
 
 ### Component Architecture
+
 - **Server Components**: Used Next.js server components for data fetching (Home page, Product details)
 - **Client Components**: Used client components only where needed (cart interactions, navigation state)
 - **Separation of Concerns**: Clear separation between data fetching, state management, and UI components
 
 ### API Integration
+
 - **DummyJSON API**: Chose DummyJSON for its simplicity and comprehensive product data
 - **Error Handling**: Implemented proper error handling with `notFound()` for invalid product IDs
 - **Caching**: Used `cache: "no-store"` to ensure fresh data on each request
 
 ### UI/UX Decisions
+
 - **DaisyUI**: Used for pre-built, accessible components to speed up development
 - **Responsive Design**: Mobile-first approach with responsive grid layouts
 - **Image Gallery**: Implemented image carousel on product details page
 - **Cart Badge**: Real-time cart item count in navigation for better UX
+- **Dark Theme**: Admin panel supports dark/light theme toggle with persistent preference
+- **Pagination**: Customizable items per page with intuitive navigation controls
 
 ## Trade-offs
 
-1. **No Backend**: This is a frontend-only application. Cart persistence is client-side only (localStorage)
-2. **No Authentication**: No user accounts or authentication system
-3. **No Payment Processing**: Checkout button is present but doesn't process payments
-4. **API Limitations**: Relies on external DummyJSON API (rate limits may apply)
-5. **No Search/Filter**: Product list shows all products without filtering or search functionality
+1. **External Product API**: Relies on external DummyJSON API for product data (rate limits may apply)
+2. **No Payment Processing**: Checkout button is present but doesn't process payments
+3. **No Search/Filter**: Product list shows all products without filtering or search functionality
+4. **Client-Side Cart**: Store cart persistence is client-side only (localStorage)
 
 ## Known Limitations
 
-- Cart data is stored only in browser localStorage (clears if user clears browser data)
-- No user authentication or user-specific carts
+- Store cart data is stored only in browser localStorage (clears if user clears browser data)
 - No product search or filtering capabilities
-- No pagination for product list (shows all products at once)
 - Checkout functionality is not implemented (UI only)
-- No error boundaries for API failures
 - Images are loaded from external URLs (DummyJSON CDN)
+- Admin authentication is separate from customer accounts
 
 ## Deployment
 
@@ -128,19 +188,55 @@ The app will be live at `https://your-project.vercel.app`
 
 ### Environment Variables
 
-No environment variables are required for this project as it uses the public DummyJSON API.
+Create a `.env.local` file with the following variables:
+
+```env
+# MongoDB connection string
+MONGODB_URI=mongodb://localhost:27017/ecommerce
+# or for MongoDB Atlas:
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname
+
+# JWT secret for authentication (use a strong random string)
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+```
+
+**Important**: Never commit `.env.local` to version control. Add it to `.gitignore`.
+
+## Testing
+
+The project includes comprehensive testing setup with Jest and React Testing Library.
+
+### Run Tests
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Run tests with coverage
+pnpm test:coverage
+```
+
+### Test Structure
+
+- **Component Tests**: Located in `components/__tests__/`
+- **Service Tests**: Located in `services/__tests__/`
+- Tests follow best practices with proper mocking and isolation
 
 ## Future Enhancements
 
 - [ ] Add product search and filtering
-- [ ] Implement pagination for product list
-- [ ] Add user authentication
-- [ ] Integrate payment processing
+- [ ] Integrate payment processing (Stripe, PayPal, etc.)
 - [ ] Add product reviews and ratings
 - [ ] Implement wishlist functionality
 - [ ] Add product categories navigation
-- [ ] Improve error handling and loading states
-- [ ] Add unit and integration tests
+- [ ] Customer account system with order history
+- [ ] Email notifications for orders
+- [ ] Product inventory management
+- [ ] Analytics and reporting dashboard
+- [ ] Multi-language support
 
 ## License
 

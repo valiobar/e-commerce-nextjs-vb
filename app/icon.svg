@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <rect width="100" height="100" rx="20" fill="#2563eb"/>
+  
+  <!-- Shopping Cart Basket -->
+  <path d="M25 30 L25 70 C25 74.418 28.582 78 33 78 L67 78 C71.418 78 75 74.418 75 70 L75 30 L25 30 Z" 
+        fill="white" opacity="0.2"/>
+  <path d="M25 30 L25 70 C25 74.418 28.582 78 33 78 L67 78 C71.418 78 75 74.418 75 70 L75 30" 
+        stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Cart Handle -->
+  <path d="M20 30 L25 30" 
+        stroke="white" stroke-width="5" stroke-linecap="round"/>
+  
+  <!-- Cart Wheels -->
+  <circle cx="35" cy="70" r="5" fill="white"/>
+  <circle cx="65" cy="70" r="5" fill="white"/>
+  
+  <!-- Shopping Items in Cart -->
+  <circle cx="40" cy="45" r="4" fill="white" opacity="0.8"/>
+  <circle cx="60" cy="50" r="3" fill="white" opacity="0.8"/>
+</svg>
+

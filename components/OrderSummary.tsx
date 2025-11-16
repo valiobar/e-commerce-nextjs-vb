@@ -1,6 +1,7 @@
+import Image from "next/image";
 import { useCartStore } from "@/store/cartStore";
 
-const calculateDiscountedPrice = (price: number, discount: number) => {
+const calculateDiscountedPrice = (price: number, discount: number): number => {
   return price - (price * discount) / 100;
 };
 
@@ -24,9 +25,11 @@ export const OrderSummary = () => {
               return (
                 <div key={item.id} className="flex gap-3">
                   <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
-                    <img
+                    <Image
                       src={item.thumbnail}
                       alt={item.title}
+                      width={64}
+                      height={64}
                       className="h-full w-full object-cover"
                     />
                   </div>

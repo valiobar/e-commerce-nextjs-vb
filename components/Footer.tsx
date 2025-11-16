@@ -45,7 +45,7 @@ export const Footer = () => {
               &quot;Quality Products, Exceptional Service, Unmatched Value&quot;
             </p>
             <p className="text-white/80 text-xs pt-4">
-              © 2024 E-Commerce Store. All rights reserved.
+              © 2025 E-Commerce Store. All rights reserved.
             </p>
           </div>
         </div>

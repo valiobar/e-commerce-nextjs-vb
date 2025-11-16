@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAdminAuthStore } from "@/store/adminAuthStore";
+import type { FormEvent } from "react";
 
 const AdminLoginPage = () => {
   const router = useRouter();
