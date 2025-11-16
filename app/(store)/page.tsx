@@ -5,6 +5,9 @@ import { ITEMS_PER_PAGE } from "@/constants/pagination";
 import { productsService } from "@/services/productsService";
 import type { SortByOption, OrderOption } from "@/types/sorting";
 
+// Enable static generation with revalidation
+export const revalidate = 60; // Revalidate every 60 seconds
+
 interface HomeProps {
   searchParams: Promise<{
     page?: string;
