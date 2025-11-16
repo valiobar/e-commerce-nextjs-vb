@@ -8,11 +8,14 @@ A modern e-commerce web application built with Next.js, TypeScript, Tailwind CSS
 
 - 🏠 **Home Page**: Browse a grid of products with images, titles, prices, and ratings
 - 📦 **Product Details**: View detailed information about each product including images, description, and specifications
+- 🔍 **Product Sorting**: Sort products by title, price, discount, or rating in ascending/descending order
 - 🛒 **Shopping Cart**: Add/remove products, update quantities, and view totals
+- 📱 **Mobile Cart Sidebar**: Responsive cart sidebar that's fully visible on mobile devices
 - 💾 **Persistent Cart**: Cart state persists across page refreshes using localStorage
 - 📄 **Pagination**: Navigate through products with customizable items per page
+- 📖 **About Page**: Information about the store and company
 - 🎨 **Modern UI**: Beautiful, responsive design using Tailwind CSS and DaisyUI
-- ⚡ **Fast Performance**: Built with Next.js 16 for optimal performance
+- ⚡ **Fast Performance**: Built with Next.js 16 for optimal performance with ISR (Incremental Static Regeneration)
 
 ### Admin Panel Features
 
@@ -89,31 +92,42 @@ e-commerce-nextjs/
 │   │   └── admin/         # Admin panel pages
 │   │       ├── login/     # Admin login page
 │   │       ├── layout.tsx # Admin layout with sidebar
+│   │       ├── error.tsx  # Admin error boundary
 │   │       └── page.tsx   # Admin dashboard
 │   ├── (store)/           # Store route group
+│   │   ├── about/         # About page
 │   │   ├── cart/          # Cart page
 │   │   ├── checkout/      # Checkout pages
 │   │   ├── products/      # Product pages
 │   │   ├── layout.tsx     # Store layout
+│   │   ├── error.tsx      # Store error boundary
 │   │   └── page.tsx       # Home page
 │   ├── api/               # API routes
 │   │   ├── auth/          # Authentication endpoints
 │   │   └── orders/        # Order endpoints
 │   ├── layout.tsx         # Root layout
+│   ├── error.tsx          # Root error boundary
+│   ├── not-found.tsx      # 404 page
 │   └── globals.css        # Global styles
 ├── components/
 │   ├── __tests__/         # Component tests
 │   ├── buttons/           # Button components
 │   ├── icons/             # Icon components
+│   ├── forms/             # Form components
 │   ├── Navigation.tsx     # Header navigation
 │   ├── ProductCard.tsx    # Product card component
 │   ├── ProductDetails.tsx # Product details component
+│   ├── ProductFilters.tsx # Product sorting/filtering
+│   ├── ProductImages.tsx  # Product image gallery
+│   ├── CartSidebar.tsx    # Cart sidebar component
 │   ├── Pagination.tsx     # Pagination component
 │   └── ...                # Other components
 ├── services/              # Business logic services
 │   ├── __tests__/         # Service tests
 │   ├── authService.ts     # Authentication service
 │   ├── adminService.ts    # Admin service
+│   ├── productsService.ts # Products API service
+│   ├── ordersService.ts   # Orders API service
 │   └── ...                # Other services
 ├── store/
 │   ├── cartStore.ts       # Cart state management
@@ -126,7 +140,8 @@ e-commerce-nextjs/
 │   ├── jwt.ts             # JWT utilities
 │   └── password.ts        # Password hashing
 ├── types/                 # TypeScript types
-│   └── product.ts         # Product types
+│   ├── product.ts         # Product types
+│   └── sorting.ts         # Sorting types
 ├── constants/             # Application constants
 └── middleware.ts          # Next.js middleware
 ```
@@ -147,9 +162,10 @@ e-commerce-nextjs/
 
 ### API Integration
 
-- **DummyJSON API**: Chose DummyJSON for its simplicity and comprehensive product data
-- **Error Handling**: Implemented proper error handling with `notFound()` for invalid product IDs
+- **DummyJSON API**: Used DummyJSON API as specified in the project requirements
+- **Error Handling**: Comprehensive error handling with try-catch blocks, error boundaries, and user-friendly error messages
 - **Caching**: Used `cache: "no-store"` to ensure fresh data on each request
+- **ISR**: Implemented Incremental Static Regeneration (ISR) with revalidation for optimal performance
 
 ### UI/UX Decisions
 
@@ -157,23 +173,28 @@ e-commerce-nextjs/
 - **Responsive Design**: Mobile-first approach with responsive grid layouts
 - **Image Gallery**: Implemented image carousel on product details page
 - **Cart Badge**: Real-time cart item count in navigation for better UX
+- **Cart Sidebar**: Slide-in cart sidebar with full mobile responsiveness
 - **Dark Theme**: Admin panel supports dark/light theme toggle with persistent preference
 - **Pagination**: Customizable items per page with intuitive navigation controls
+- **Error Boundaries**: React error boundaries at app, store, and admin levels for graceful error handling
 
 ## Trade-offs
 
 1. **External Product API**: Relies on external DummyJSON API for product data (rate limits may apply)
 2. **No Payment Processing**: Checkout button is present but doesn't process payments
-3. **No Search/Filter**: Product list shows all products without filtering or search functionality
+3. **No Search Functionality**: Product list shows all products without search capability (sorting is available)
 4. **Client-Side Cart**: Store cart persistence is client-side only (localStorage)
+5. **No Product Filtering**: Products can be sorted but not filtered by category or other attributes
 
 ## Known Limitations
 
 - Store cart data is stored only in browser localStorage (clears if user clears browser data)
-- No product search or filtering capabilities
-- Checkout functionality is not implemented (UI only)
+- No product search functionality (sorting by title, price, discount, and rating is available)
+- No product filtering by category or other attributes
+- Checkout functionality is not implemented (UI only, orders are saved to database)
 - Images are loaded from external URLs (DummyJSON CDN)
 - Admin authentication is separate from customer accounts
+- Error boundaries catch errors but don't send them to an error tracking service
 
 ## Deployment
 
@@ -227,7 +248,8 @@ pnpm test:coverage
 
 ## Future Enhancements
 
-- [ ] Add product search and filtering
+- [ ] Add product search functionality
+- [ ] Add product filtering by category and other attributes
 - [ ] Integrate payment processing (Stripe, PayPal, etc.)
 - [ ] Add product reviews and ratings
 - [ ] Implement wishlist functionality
@@ -237,6 +259,8 @@ pnpm test:coverage
 - [ ] Product inventory management
 - [ ] Analytics and reporting dashboard
 - [ ] Multi-language support
+- [ ] Error tracking service integration (Sentry, LogRocket, etc.)
+- [ ] Server-side cart persistence for logged-in users
 
 ## License
 

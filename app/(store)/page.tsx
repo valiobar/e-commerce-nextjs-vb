@@ -26,11 +26,20 @@ const Home = async ({ searchParams }: HomeProps) => {
   const sortBy = params.sortBy as SortByOption | undefined;
   const order = params.order as OrderOption | undefined;
 
-  const data = await productsService.fetchProducts({
-    page: currentPage,
-    limit: itemsPerPage,
-    ...(sortBy && sortBy !== "none" && { sortBy, order: order || "asc" }),
-  });
+  let data;
+  try {
+    data = await productsService.fetchProducts({
+      page: currentPage,
+      limit: itemsPerPage,
+      ...(sortBy && sortBy !== "none" && { sortBy, order: order || "asc" }),
+    });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw new Error(
+      "Failed to load products. Please try again later or refresh the page."
+    );
+  }
+
   const totalPages = Math.ceil(data.total / itemsPerPage);
 
   return (

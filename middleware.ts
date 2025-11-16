@@ -36,21 +36,31 @@ export const middleware = async (request: NextRequest) => {
       return NextResponse.redirect(loginUrl);
     }
 
-    // Verify token
-    const decoded = verifyTokenEdge(token);
+    try {
+      // Verify token
+      const decoded = verifyTokenEdge(token);
 
-    if (!decoded) {
-      // Token is invalid or expired, redirect to login
+      if (!decoded) {
+        // Token is invalid or expired, redirect to login
+        const loginUrl = new URL("/admin/login", request.url);
+        loginUrl.searchParams.set("redirect", pathname);
+        // Clear invalid cookie
+        const response = NextResponse.redirect(loginUrl);
+        response.cookies.delete(ADMIN_TOKEN_COOKIE_NAME);
+        return response;
+      }
+
+      // Token is valid, allow access
+      return NextResponse.next();
+    } catch (error) {
+      // Token verification failed, redirect to login
+      console.error("Error verifying token in middleware:", error);
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
-      // Clear invalid cookie
       const response = NextResponse.redirect(loginUrl);
       response.cookies.delete(ADMIN_TOKEN_COOKIE_NAME);
       return response;
     }
-
-    // Token is valid, allow access
-    return NextResponse.next();
   }
 
   // Allow all other routes

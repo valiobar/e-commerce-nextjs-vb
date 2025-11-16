@@ -13,20 +13,25 @@ export interface DashboardStats {
  * Get dashboard statistics for admin panel
  */
 export const getDashboardStats = async (): Promise<DashboardStats> => {
-  await connectDB();
+  try {
+    await connectDB();
 
-  const [totalOrders, totalUsers, recentOrders, totalRevenue] =
-    await Promise.all([
-      OrderModel.countDocuments(),
-      UserModel.countDocuments(),
-      OrderModel.find().sort({ createdAt: -1 }).limit(5).lean(),
-      OrderModel.getTotalRevenue(),
-    ]);
+    const [totalOrders, totalUsers, recentOrders, totalRevenue] =
+      await Promise.all([
+        OrderModel.countDocuments(),
+        UserModel.countDocuments(),
+        OrderModel.find().sort({ createdAt: -1 }).limit(5).lean(),
+        OrderModel.getTotalRevenue(),
+      ]);
 
-  return {
-    totalOrders,
-    totalUsers,
-    totalRevenue,
-    recentOrders: recentOrders as Order[],
-  };
+    return {
+      totalOrders,
+      totalUsers,
+      totalRevenue,
+      recentOrders: recentOrders as Order[],
+    };
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+    throw new Error("Failed to load dashboard statistics");
+  }
 };

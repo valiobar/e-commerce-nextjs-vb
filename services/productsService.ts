@@ -27,17 +27,26 @@ export const productsService = {
       url += `&sortBy=${sortBy}&order=${order}`;
     }
 
-    const res = await fetch(url, {
-      cache: "no-store",
-    });
+    try {
+      const res = await fetch(url, {
+        cache: "no-store",
+      });
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch products");
+      if (!res.ok) {
+        throw new Error(
+          `Failed to fetch products: ${res.status} ${res.statusText}`
+        );
+      }
+
+      const data: ProductsResponse = await res.json();
+
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to fetch products: Network error");
     }
-
-    const data: ProductsResponse = await res.json();
-
-    return data;
   },
 
   /**
@@ -53,8 +62,10 @@ export const productsService = {
         return null;
       }
 
-      return res.json();
-    } catch {
+      const data: Product = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching product:", error);
       return null;
     }
   },

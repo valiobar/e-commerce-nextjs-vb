@@ -5,8 +5,17 @@ import type { Order } from "@/models/Order";
 export const dynamic = "force-dynamic";
 
 const AdminDashboardPage = async () => {
-  const { totalOrders, totalUsers, recentOrders, totalRevenue } =
-    await getDashboardStats();
+  let stats;
+  try {
+    stats = await getDashboardStats();
+  } catch (error) {
+    console.error("Error loading dashboard stats:", error);
+    throw new Error(
+      "Failed to load dashboard statistics. Please try again later."
+    );
+  }
+
+  const { totalOrders, totalUsers, recentOrders, totalRevenue } = stats;
 
   return (
     <div className="space-y-6">

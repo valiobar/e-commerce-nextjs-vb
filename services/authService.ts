@@ -19,33 +19,50 @@ export const authService = {
    * Login with username and password
    */
   async login(username: string, password: string): Promise<LoginResponse> {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = (await response.json()) as LoginResponse | AuthErrorResponse;
+      const data = (await response.json()) as LoginResponse | AuthErrorResponse;
 
-    if (!response.ok) {
-      throw new Error("error" in data ? data.error : "Login failed");
+      if (!response.ok) {
+        throw new Error("error" in data ? data.error : "Login failed");
+      }
+
+      return data as LoginResponse;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Login failed: Network error");
     }
-
-    return data as LoginResponse;
   },
 
   /**
    * Logout the current user
    */
   async logout(): Promise<void> {
-    const response = await fetch("/api/auth/logout", {
-      method: "POST",
-    });
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
 
-    if (!response.ok) {
-      throw new Error("Logout failed");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          "error" in errorData ? errorData.error : "Logout failed"
+        );
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Logout failed: Network error");
     }
   },
 
@@ -53,17 +70,26 @@ export const authService = {
    * Verify authentication status
    */
   async checkAuth(): Promise<VerifyResponse> {
-    const response = await fetch("/api/auth/verify", {
-      method: "GET",
-      credentials: "include",
-    });
+    try {
+      const response = await fetch("/api/auth/verify", {
+        method: "GET",
+        credentials: "include",
+      });
 
-    const data = (await response.json()) as VerifyResponse | AuthErrorResponse;
+      const data = (await response.json()) as
+        | VerifyResponse
+        | AuthErrorResponse;
 
-    if (!response.ok) {
-      throw new Error("error" in data ? data.error : "Not authenticated");
+      if (!response.ok) {
+        throw new Error("error" in data ? data.error : "Not authenticated");
+      }
+
+      return data as VerifyResponse;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Authentication check failed: Network error");
     }
-
-    return data as VerifyResponse;
   },
 };

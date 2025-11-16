@@ -29,7 +29,9 @@ export const CartSidebar = () => {
       {/* Sidebar */}
       <div
         className={`fixed right-0 top-0 h-screen bg-white shadow-2xl flex flex-col transition-all duration-300 ease-in-out overflow-hidden border-l border-gray-200 z-50 ${
-          isOpen ? "w-96 opacity-100" : "w-0 opacity-0 pointer-events-none"
+          isOpen
+            ? "w-full sm:w-96 opacity-100 translate-x-0"
+            : "w-0 opacity-0 translate-x-full pointer-events-none"
         }`}
         role="dialog"
         aria-modal="true"
@@ -39,7 +41,8 @@ export const CartSidebar = () => {
         style={{ backgroundColor: "#ffffff" }}
       >
         {/* Header with Close Button */}
-        <div className="flex items-center justify-end p-4 border-b border-accent">
+        <div className="flex items-center justify-between p-4 border-b border-accent shrink-0">
+          <h2 className="text-lg font-semibold text-primary">Shopping Cart</h2>
           <button
             onClick={closeCart}
             className="btn btn-sm btn-circle cursor-pointer text-primary hover:text-secondary transition-colors"

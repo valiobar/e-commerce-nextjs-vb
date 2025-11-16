@@ -10,45 +10,78 @@ export const ordersService = {
    * Create a new order
    */
   async createOrder(orderData: CreateOrderParams): Promise<Order> {
-    const res = await fetch("/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    });
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
 
-    if (!res.ok) {
-      throw new Error("Failed to create order");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Failed to create order: ${res.status}`
+        );
+      }
+
+      const data: Order = await res.json();
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to create order: Network error");
     }
-
-    return res.json();
   },
 
   /**
    * Fetch orders by user ID
    */
   async getOrdersByUserId(userId: string): Promise<Order[]> {
-    const res = await fetch(`/api/orders?userId=${userId}`);
+    try {
+      const res = await fetch(`/api/orders?userId=${userId}`);
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch orders");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Failed to fetch orders: ${res.status}`
+        );
+      }
+
+      const data: Order[] = await res.json();
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to fetch orders: Network error");
     }
-
-    return res.json();
   },
 
   /**
    * Fetch a single order by ID
    */
   async getOrderById(orderId: string): Promise<Order> {
-    const res = await fetch(`/api/orders/${orderId}`);
+    try {
+      const res = await fetch(`/api/orders/${orderId}`);
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch order");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Failed to fetch order: ${res.status}`
+        );
+      }
+
+      const data: Order = await res.json();
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to fetch order: Network error");
     }
-
-    return res.json();
   },
 
   /**
@@ -58,32 +91,53 @@ export const ordersService = {
     orderId: string,
     status: Order["status"]
   ): Promise<Order> {
-    const res = await fetch(`/api/orders/${orderId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status }),
-    });
+    try {
+      const res = await fetch(`/api/orders/${orderId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      });
 
-    if (!res.ok) {
-      throw new Error("Failed to update order");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Failed to update order: ${res.status}`
+        );
+      }
+
+      const data: Order = await res.json();
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to update order: Network error");
     }
-
-    return res.json();
   },
 
   /**
    * Get total revenue from all orders
    */
   async getTotalRevenue(): Promise<number> {
-    const res = await fetch("/api/orders?totalRevenue=true");
+    try {
+      const res = await fetch("/api/orders?totalRevenue=true");
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch total revenue");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Failed to fetch total revenue: ${res.status}`
+        );
+      }
+
+      const data = await res.json();
+      return data.totalRevenue ?? 0;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to fetch total revenue: Network error");
     }
-
-    const data = await res.json();
-    return data.totalRevenue;
   },
 };
