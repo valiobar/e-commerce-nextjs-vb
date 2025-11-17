@@ -27,33 +27,45 @@ export const Pagination = ({
 
   const getPageNumbers = useCallback(() => {
     const pages: (number | string)[] = [];
-    const maxVisible = 7;
+    const maxVisible = 3;
 
     if (totalPages <= maxVisible) {
+      // Show all pages if total is 3 or less
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      if (currentPage <= 3) {
-        for (let i = 1; i <= 5; i++) {
-          pages.push(i);
-        }
-        pages.push("...");
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1);
-        pages.push("...");
-        for (let i = totalPages - 4; i <= totalPages; i++) {
-          pages.push(i);
-        }
+      // Always show exactly 3 page number buttons (no first/last page buttons)
+      let startPage: number;
+      let endPage: number;
+
+      if (currentPage <= 2) {
+        // Near the beginning: show pages 1-3
+        startPage = 1;
+        endPage = 3;
+      } else if (currentPage >= totalPages - 1) {
+        // Near the end: show last 3 pages
+        startPage = totalPages - 2;
+        endPage = totalPages;
       } else {
-        pages.push(1);
+        // In the middle: show current page with one before and one after
+        startPage = currentPage - 1;
+        endPage = currentPage + 1;
+      }
+
+      // Add ellipsis before if needed (only if not showing page 1)
+      if (startPage > 1) {
         pages.push("...");
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
-        }
+      }
+
+      // Add exactly 3 page number buttons
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      // Add ellipsis after if needed (only if not showing last page)
+      if (endPage < totalPages) {
         pages.push("...");
-        pages.push(totalPages);
       }
     }
 
